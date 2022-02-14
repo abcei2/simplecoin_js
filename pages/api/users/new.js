@@ -2,21 +2,33 @@ import db from '../../../utils/db';
 import cryptoRandomString from 'crypto-random-string';
 
 export default async (req, res) => {
+  
+  if (req.method != 'POST') {
+    
+    res.status(400).end();
+    return
+  }
   try {
     const users = await db.collection('users').get();
     const usersData = users.docs.map(user => user.data());
+    
     let mainKey=getMainKey();
+    let accountNumber = cryptoRandomString({length: 10, type: 'numeric'})
 
-    while (usersData.some(user => user.main_key === mainKey)) {
+    while (usersData.some(user => user.mainKey === mainKey)) {
       mainKey=getMainKey();
+    } 
+    while (usersData.some(user => user.accountNumber === accountNumber)) {
+      accountNumber=cryptoRandomString({length: 10, type: 'numeric'});
     } 
     
     const { id } = await db.collection('users').add({
-      main_key: mainKey,
-      balance: 0,
+      mainKey: mainKey,
+      accountNumber: accountNumber,
+      balance: 1000,
       created: new Date().toISOString(),
     });
-    res.status(200).json({ id, mainKey });
+    res.status(200).json({ id, mainKey, accountNumber });
 
     
   } catch (e) {
@@ -33,15 +45,3 @@ function getMainKey(){
   return randomid
 }
 
-export const getStaticPaths = async () => {
-  const entries = await db.collection("entries").get()
-  const paths = entries.docs.map(entry => ({
-    params: {
-      slug: entry.data().slug
-    }
-  }));
-  return {
-    paths,
-    fallback: true
-  }
-}
