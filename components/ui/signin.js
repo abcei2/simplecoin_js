@@ -19,7 +19,6 @@ export default function Signin() {
           document.getElementById("errorLabel").innerHTML=error.response.data.message
       }
     });
-    // result.user => 'Ada Lovelace'
   }
   const newAccount = (ev)=>{
     axios.post(process.env.HOST+'/api/users/new').then(response => {

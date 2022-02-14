@@ -18,11 +18,13 @@ export default async (req, res) => {
       let toUserData = null
       const from = fromUser.data().accountNumber
       
-      if(!fromUser.data()){
+      if(!fromUser.exists()){
           res.status(401).end();
+          return
       }
       if(fromUser.data().mainKey!=mainKey){
           res.status(401).end();
+          return
       }
       ////////////////////////////
       if(substraction(fromUser.data().balance,ammount)<0){
