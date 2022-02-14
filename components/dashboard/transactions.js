@@ -4,9 +4,13 @@ import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 const Transactions = (props) => {    
     const [transactionsItems, setTransactionsItems] = useState([])
-
+    useEffect(()=>{      
+        
+        listTransacitons()
+    }, [])
     const sendMoney = async event => {
         event.preventDefault()
+        
         axios.post(process.env.HOST+'/api/transactions/new',     {        
             userId: props.userId,
             mainKey: props.mainKey,
@@ -18,8 +22,6 @@ const Transactions = (props) => {
 
         }).catch(function (error) {
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
                 document.getElementById("errorLabel").innerHTML=error.response.data.message
             }
         });
@@ -40,7 +42,6 @@ const Transactions = (props) => {
             }
         });
     }
-    listTransacitons()
     return (
         <div className="container">
             <div className="row d-flex justify-content-center">

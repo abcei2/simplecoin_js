@@ -1,23 +1,24 @@
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'
 const AccountBalance = (props) => {
     
     
     const [balance, setBalance] = useState(-1)
     const [accountNumber, setAccountNumber] = useState("")
-    const router = useRouter()
-    axios.post( process.env.HOST+'/api/users/get',
-    {        
-        userId: props.userId,
-        mainKey: props.mainKey
-        
-    }).then(response => {
-        setBalance(response.data.balance)
-        setAccountNumber(response.data.accountNumber)
-        
-    });
+  
+    useEffect(()=>{      
+        axios.post( process.env.HOST+'/api/users/get',
+        {        
+            userId: props.userId,
+            mainKey: props.mainKey
+            
+        }).then(response => {
+            setBalance(response.data.balance)
+            setAccountNumber(response.data.accountNumber)
+            
+        });
+    }, [])
   
     
     return (
