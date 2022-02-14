@@ -1,7 +1,6 @@
 
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useEffect, useState } from 'react';
 const Transactions = (props) => {    
     const sendMoney = async event => {
         event.preventDefault()
@@ -19,7 +18,6 @@ const Transactions = (props) => {
             if (error.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
-                console.log(error.response.data);
                 document.getElementById("errorLabel").innerHTML=error.response.data.message
             }
         });
@@ -53,8 +51,8 @@ const Transactions = (props) => {
                         <button type="submit" className="btn btn-primary" >
                             Submit
                         </button>
-                        <label id="errorLabel"></label>
                     </form>
+                    <label id="errorLabel"></label>
                 </div>
             </div>
         </div>

@@ -18,24 +18,21 @@ export default async (req, res) => {
        
                     
         }else{
-            res.status(401).end();
+            res.status(401).json({message:"debe proporcionar la llave principal"});
         }    
 
         try  {
             const doc = await usersRef.doc(userId).get();
-            if(!doc.data()){
-                res.status(401).end();
-                return
-            }
-            if(doc.data().mainKey!=mainKey){
-                res.status(401).end();
-                return
-            }
+          
             
             if (!doc.exists) {
-                res.status(404).end();
+                res.status(401).json({message:"el usuario no existe"});
                 return
             } else {
+                if(doc.data().mainKey!=mainKey){
+                    res.status(401).json({message:"la llave principal no coincide con el usuario"});
+                    return
+                }
                 let data = doc.data()
                 data.id = doc.id
                 res.status(200).json(data);
@@ -43,12 +40,11 @@ export default async (req, res) => {
             }        
 
         } catch (e) {
-            console.log(e)
-            res.status(400).end();
+            res.status(401).json({message:"error interno"});
             return
         }
     }
     else
-        res.status(401).end();
+        res.status(400).end();
         return
 }

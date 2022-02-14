@@ -12,6 +12,12 @@ export default function Signin() {
       localStorage.setItem('mainKey', response.data.mainKey);     
       localStorage.setItem('userId', response.data.id);     
       location.reload();
+    }).catch(function (error) {
+      if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          document.getElementById("errorLabel").innerHTML=error.response.data.message
+      }
     });
     // result.user => 'Ada Lovelace'
   }
@@ -55,6 +61,7 @@ export default function Signin() {
                 Nueva cuenta
               </button>
             </form>
+            <label id="errorLabel"></label>
           </div>
         </div>
       </div>
